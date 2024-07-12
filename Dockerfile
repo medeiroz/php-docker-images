@@ -32,7 +32,14 @@ RUN apt-get install -y --no-install-recommends \
   libonig-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install \
+RUN docker-php-ext-configure gd \
+  --prefix=/usr \
+  --with-jpeg \
+  --with-webp \
+  --with-xpm \
+  --with-freetype \
+  && docker-php-ext-install -j$(nproc) \
+  gd \
   opcache \
   pcntl \
   pdo_mysql \
@@ -42,40 +49,19 @@ RUN docker-php-ext-install \
   sodium \
   exif
 
-# Install GD extension
-RUN docker-php-ext-configure gd \
-  --prefix=/usr \
-  --with-jpeg \
-  --with-webp \
-  --with-xpm \
-  --with-freetype \
-  && docker-php-ext-install -j$(nproc) gd
-
 # Install pecl ds igbinary extensions
-RUN pecl update-channels && \
-  pecl install ds igbinary && \
-  docker-php-ext-enable ds igbinary
+RUN pecl update-channels \
+  && pecl install ds igbinary \
+  && docker-php-ext-enable ds igbinary
 
 # Install Redis extension
-RUN pecl install -D 'enable-redis-igbinary="yes"' redis && \
-  docker-php-ext-enable redis
+RUN pecl install -D 'enable-redis-igbinary="yes"' redis mongodb grpc \
+  && docker-php-ext-enable redis mongodb grpc 
 
-# Install MongoDB extension
-RUN pecl install mongodb \
-  docker-php-ext-enable mongodb
 
-# Install gRPC extension
-RUN pecl install grpc \
-  docker-php-ext-enable grpc
-
-# Install Composer
-COPY --from=composer /usr/bin/composer /usr/bin/composer
-
-# Install Node
-RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-  && apt-get install -y nodejs \
-  && npm install -g npm \
-  && npm install -g yarn
-
-# Remove cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install Composer + Node
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+  && curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
+  && apt-get install nodejs -y --no-install-recommends \
+  && npm install -g npm yarn \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
