@@ -2,8 +2,6 @@ FROM php:8.3-fpm
 
 LABEL maintainer="Flavio Medeiros <smedeiros.flavio@gmail.com>"
 
-ARG NODE_VERSION=22
-
 # Update and upgrade Linux
 RUN apt-get update && apt-get upgrade -y
 
@@ -55,13 +53,10 @@ RUN pecl update-channels \
   && docker-php-ext-enable ds igbinary
 
 # Install Redis extension
-RUN pecl install -D 'enable-redis-igbinary="yes"' redis mongodb grpc \
-  && docker-php-ext-enable redis mongodb grpc 
+RUN pecl install -D 'enable-redis-igbinary="yes"' redis mongodb \
+  && docker-php-ext-enable redis mongodb 
 
 
 # Install Composer + Node
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-  && curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-  && apt-get install nodejs -y --no-install-recommends \
-  && npm install -g npm yarn \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
