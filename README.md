@@ -11,7 +11,7 @@ This repository contains Docker images optimized for Laravel applications. These
 - **Xdebug Support**: Optional Xdebug support for local development and debugging.
 
 ## Available Tags
-- `8.3-fpm`: PHP 8.3 fpm with Laravel optimizations.
+- `8.3-fpm`: PHP 8.2 fpm with Laravel optimizations.
 - `8.2-fpm`: PHP 8.2 fpm with Laravel optimizations.
 - More tags available on the [Docker Hub page](#https://hub.docker.com/r/medeiroz/php).
 
@@ -20,7 +20,7 @@ This repository contains Docker images optimized for Laravel applications. These
 To use these Docker images for your Laravel application, you can pull the image from Docker Hub:
 
 ```bash
-docker pull medeiroz/php:8.3-fpm
+docker pull medeiroz/php:8.2-fpm
 ```
 
 Access the [Example Larave Application](https://github.com/medeiroz/laravel-skeleton) to see how to use the Docker images in a Laravel application.
