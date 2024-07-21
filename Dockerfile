@@ -8,6 +8,7 @@ RUN apt-get update && apt-get upgrade -y
 # Install Ubuntu Linux dependencies
 RUN apt-get install -y --no-install-recommends \
   $PHPIZE_DEPS \
+  nginx \
   curl \
   git \
   zip \
