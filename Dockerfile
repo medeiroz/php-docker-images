@@ -8,6 +8,7 @@ RUN apt-get update && apt-get upgrade -y
 # Install Ubuntu Linux dependencies
 RUN apt-get install -y --no-install-recommends \
   $PHPIZE_DEPS \
+  nginx \
   curl \
   git \
   zip \
@@ -52,11 +53,11 @@ RUN pecl update-channels \
   && pecl install ds igbinary \
   && docker-php-ext-enable ds igbinary
 
-# Install Redis extension
+# Install Redis + MongoDB extension
 RUN pecl install -D 'enable-redis-igbinary="yes"' redis mongodb \
   && docker-php-ext-enable redis mongodb 
 
 
-# Install Composer + Node
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
