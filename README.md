@@ -13,7 +13,7 @@ This repository contains Docker images optimized for Laravel applications. These
 - **Xdebug Support**: Optional Xdebug support for local development and debugging.
 
 ## Available Tags
-- `8.5-frankenphp-alpine`: PHP 8.5 on the latest FrankenPHP Alpine runtime (built for `linux/arm64`). Designed to be used as both the build and runtime stage of an app so PHP extensions are compiled once here, not per app build. No Node — apps add it in their own build stage.
+- `8.5-frankenphp-alpine`: PHP 8.5 on the latest FrankenPHP Alpine runtime (`linux/amd64` + `linux/arm64`). Designed to be used as both the build and runtime stage of an app so PHP extensions are compiled once here, not per app build. No Node — apps add it in their own build stage.
 - `8.3-fpm`: PHP 8.3 fpm with Laravel optimizations.
 - `8.2-fpm`: PHP 8.2 fpm with Laravel optimizations.
 - More tags available on the [Docker Hub page](#https://hub.docker.com/r/medeiroz/php).
