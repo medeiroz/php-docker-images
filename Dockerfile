@@ -22,9 +22,12 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # in each extension's apk build/runtime deps, compiles, and removes the build
 # deps — so no toolchain is left behind in the final image. igbinary is listed
 # before redis so install-php-extensions enables redis' igbinary serializer.
+# excimer is the sampling profiler the Sentry PHP SDK requires for profiling
+# (no-op unless Sentry profiling is enabled in the consuming app).
 RUN install-php-extensions \
     bcmath \
     ds \
+    excimer \
     exif \
     gd \
     igbinary \
