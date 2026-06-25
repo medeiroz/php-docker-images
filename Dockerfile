@@ -1,63 +1,41 @@
-FROM php:8.3-fpm
+# syntax=docker/dockerfile:1.7
+#
+# medeiroz/php:8.5-frankenphp-alpine
+#
+# General-purpose PHP 8.5 base on the latest FrankenPHP Alpine runtime, with the
+# extensions and tooling our Laravel apps need pre-compiled. Consuming apps use
+# this image for BOTH their build and runtime stages so PHP extensions are never
+# compiled per app build. Node is intentionally NOT included — apps that need a
+# JS toolchain add it only in their build stage.
+FROM dunglas/frankenphp:php8.5-alpine
 
 LABEL maintainer="Flavio Medeiros <smedeiros.flavio@gmail.com>"
 
-# Update and upgrade Linux
-RUN apt-get update && apt-get upgrade -y
+# System tooling: git (Composer source installs), curl (health checks),
+# dcron (cron daemon + crontab) for scheduled tasks.
+RUN apk add --no-cache git curl dcron
 
-# Install Ubuntu Linux dependencies
-RUN apt-get install -y --no-install-recommends \
-  $PHPIZE_DEPS \
-  nginx \
-  curl \
-  git \
-  zip \
-  unzip \
-  cron \
-  supervisor \
-  libzip-dev \
-  libz-dev \
-  libcurl4-openssl-dev \
-  pkg-config \
-  libsodium-dev \
-  libssl-dev \
-  libpq-dev \
-  libjpeg-dev \
-  libpng-dev \
-  libfreetype6-dev \
-  libwebp-dev \
-  libxpm-dev \
-  libmcrypt-dev \
-  libonig-dev
+# Composer, copied from the official image to pin a known-good binary.
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install PHP extensions
-RUN docker-php-ext-configure gd \
-  --prefix=/usr \
-  --with-jpeg \
-  --with-webp \
-  --with-xpm \
-  --with-freetype \
-  && docker-php-ext-install -j$(nproc) \
-  gd \
-  opcache \
-  pcntl \
-  pdo_mysql \
-  pdo_pgsql \
-  zip \
-  sockets \
-  sodium \
-  exif
-
-# Install pecl ds igbinary extensions
-RUN pecl update-channels \
-  && pecl install ds igbinary \
-  && docker-php-ext-enable ds igbinary
-
-# Install Redis + MongoDB extension
-RUN pecl install -D 'enable-redis-igbinary="yes"' redis mongodb \
-  && docker-php-ext-enable redis mongodb 
-
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-  && apt-get clean && rm -rf /var/lib/apt/lists/*
+# PHP extensions. install-php-extensions (shipped in the FrankenPHP image) pulls
+# in each extension's apk build/runtime deps, compiles, and removes the build
+# deps — so no toolchain is left behind in the final image. igbinary is listed
+# before redis so install-php-extensions enables redis' igbinary serializer.
+RUN install-php-extensions \
+    bcmath \
+    ds \
+    exif \
+    gd \
+    igbinary \
+    intl \
+    mongodb \
+    opcache \
+    pcntl \
+    pdo_mysql \
+    pdo_pgsql \
+    pgsql \
+    redis \
+    sockets \
+    sodium \
+    zip

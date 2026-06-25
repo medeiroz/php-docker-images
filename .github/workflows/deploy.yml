@@ -9,7 +9,9 @@ jobs:
   build-and-push:
     name: Build php:${{ github.ref_name }}
     environment: production
-    runs-on: ubuntu-latest
+    # Native arm64 runner (free for public repos) — the consuming app deploys on
+    # arm64 (Coolify), and building natively avoids slow QEMU emulation.
+    runs-on: ubuntu-24.04-arm
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -36,6 +38,7 @@ jobs:
       with:
         context: .
         push: true
+        platforms: linux/arm64
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
