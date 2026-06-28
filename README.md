@@ -29,12 +29,13 @@ Access the [Example Larave Application](https://github.com/medeiroz/laravel-skel
 - MongoDB
 - Redis
 - GD
+- Imagick (with HEIC/HEIF + WebP support)
 - Opcache
 - Pcntl
 - Pdo Mysql
 - Pdo Pgsql
 - Zip
-- Sockers
+- Sockets
 - Sodium
 - Exif
 
