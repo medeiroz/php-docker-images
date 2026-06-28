@@ -5,12 +5,12 @@ This repository contains Docker images optimized for Laravel applications. These
 ## Features
 
 - **Optimized for Laravel**: Pre-configured to meet Laravel's requirements, ensuring smooth deployments.
-- **PHP Extensions**: Includes essential PHP extensions for Laravel, such as `MongoDB`, `Redis`, PDO, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath, and more.
+- **PHP Extensions**: Includes essential PHP extensions for Laravel, such as `Imagick` (HEIC/WebP), `Redis`, `MongoDB`, `Intl`, `BCMath`, `GD`, PDO (MySQL/PgSQL), and more (see the full list below).
 - **Composer Pre-installed**: Comes with Composer pre-installed to manage your PHP dependencies.
 - **Environment Customization**: Easy to customize PHP settings and configurations to match your specific needs.
-- **Xdebug Support**: Optional Xdebug support for local development and debugging.
 
 ## Available Tags
+- `8.5-frankenphp-alpine`: PHP 8.5 on FrankenPHP (Alpine) with Laravel optimizations.
 - `8.3-fpm`: PHP 8.3 fpm with Laravel optimizations.
 - `8.2-fpm`: PHP 8.2 fpm with Laravel optimizations.
 - More tags available on the [Docker Hub page](#https://hub.docker.com/r/medeiroz/php).
@@ -26,25 +26,30 @@ docker pull medeiroz/php:8.3-fpm
 Access the [Example Larave Application](https://github.com/medeiroz/laravel-skeleton) to see how to use the Docker images in a Laravel application.
 
 ## Available PHP Extensions
-- MongoDB
-- Redis
+- BCMath
+- Data Structures (ds)
+- Excimer (sampling profiler for Sentry)
+- Exif
 - GD
+- Igbinary
 - Imagick (with HEIC/HEIF + WebP support)
+- Intl
+- MongoDB
 - Opcache
 - Pcntl
-- Pdo Mysql
-- Pdo Pgsql
-- Zip
+- PDO MySQL
+- PDO PgSQL
+- PgSQL
+- Redis
 - Sockets
 - Sodium
-- Exif
+- Zip
 
 ## Available Additional Tools
 - Composer
 - Git
-- Supervisor
-- Cron
 - Curl
+- Cron (dcron)
 
 ## Contributing
 Contributions are welcome! Please feel free to submit a pull request to add new features, optimizations, or updates to the Docker images.
