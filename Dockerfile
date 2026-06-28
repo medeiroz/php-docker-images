@@ -24,6 +24,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # before redis so install-php-extensions enables redis' igbinary serializer.
 # excimer is the sampling profiler the Sentry PHP SDK requires for profiling
 # (no-op unless Sentry profiling is enabled in the consuming app).
+# imagick is for server-side image conversion (clinical photos → WebP, incl.
+# HEIC/HEIF from iPhones); the Alpine ImageMagick ships the libheif delegate, so
+# HEIC read/write works out of the box.
 RUN install-php-extensions \
     bcmath \
     ds \
@@ -31,6 +34,7 @@ RUN install-php-extensions \
     exif \
     gd \
     igbinary \
+    imagick \
     intl \
     mongodb \
     opcache \
